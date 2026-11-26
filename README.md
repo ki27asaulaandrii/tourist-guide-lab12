@@ -40,6 +40,16 @@ lib/
 3. Виконати `flutter pub get`.
 4. Запустити застосунок командою `flutter run`.
 
+## Тести
+
+- Unit-тести: `flutter test test/ --coverage`
+- E2E на Windows: `flutter test integration_test -d windows`
+- Maestro на Android (потрібен емулятор або телефон із встановленим APK): `maestro test .maestro/favorites.yaml`
+
+Команда `flutter create .` додає файли `test/widget_test.dart` і `analysis_options.yaml`, через які `flutter analyze` завершується з помилкою. Їх треба видалити.
+
+CI описаний у `.github/workflows/tests.yml`: unit-тести запускаються на кожен push і pull request, E2E лише для pull request.
+
 ## Гілки
 
 - main: стабільний код, релізи позначені тегами (v1.0.0)

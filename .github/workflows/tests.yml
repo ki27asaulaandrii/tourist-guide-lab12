@@ -13,6 +13,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: "3.47.4"
           cache: true
       - run: flutter pub get
       - run: flutter analyze
@@ -27,6 +28,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: "3.47.4"
           cache: true
       - run: flutter create . --platforms=windows
       - run: flutter pub get
@@ -46,6 +48,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: "3.47.4"
           cache: true
       - run: flutter create . --platforms=android --org com.example
       - run: flutter pub get
@@ -54,10 +57,26 @@ jobs:
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
           arch: x86_64
           script: |
             adb install build/app/outputs/flutter-apk/app-debug.apk
-            maestro test .maestro/favorites.yaml
+            maestro test .maestro/favorites.yaml || { maestro hierarchy > hierarchy.json; exit 1; }
+      - name: Upload Maestro results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-results
+          include-hidden-files: true
+          if-no-files-found: warn
+          path: |
+            ~/.maestro/tests
+            maestro_*.png
+            hierarchy.json
