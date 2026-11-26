@@ -1,0 +1,15 @@
+appId: com.example.tourist_guide
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Фонтан Рошен"
+    timeout: 10000
+- tapOn:
+    text: "Додати в обране"
+    index: 0
+- assertVisible: "Прибрати з обраного"
+- assertVisible: "1"
+- tapOn: "Обране"
+- assertVisible: "Фонтан Рошен"
+- assertNotVisible: "Обраних місць немає"
