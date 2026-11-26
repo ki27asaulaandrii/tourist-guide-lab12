@@ -12,7 +12,11 @@ appId: com.example.tourist_guide
 - assertVisible: "Прибрати з обраного"
 - assertVisible: "1"
 - takeScreenshot: maestro_01_home
-- tapOn: "Обране"
+# Коли є лічильник, текст доступності кнопки обраного складається лише з числа, підказки "Обране" в ньому немає
+- tapOn: "1"
+# Перевірка, що відкрився саме екран обраного
+- assertVisible: "Обране"
 - assertVisible: 'Фонтан Рошен[\s\S]*'
+- assertNotVisible: 'Софійський собор[\s\S]*'
 - assertNotVisible: "Обраних місць немає"
 - takeScreenshot: maestro_02_favorites
