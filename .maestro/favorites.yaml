@@ -2,14 +2,17 @@ appId: com.example.tourist_guide
 ---
 - launchApp:
     clearState: true
+# Назва, опис і рейтинг об'єднані в один підпис доступності, тому потрібен регулярний вираз
 - extendedWaitUntil:
-    visible: "Фонтан Рошен"
+    visible: 'Фонтан Рошен[\s\S]*'
     timeout: 10000
 - tapOn:
     text: "Додати в обране"
     index: 0
 - assertVisible: "Прибрати з обраного"
 - assertVisible: "1"
+- takeScreenshot: maestro_01_home
 - tapOn: "Обране"
-- assertVisible: "Фонтан Рошен"
+- assertVisible: 'Фонтан Рошен[\s\S]*'
 - assertNotVisible: "Обраних місць немає"
+- takeScreenshot: maestro_02_favorites
